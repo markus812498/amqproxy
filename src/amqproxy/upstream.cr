@@ -32,7 +32,7 @@ module AMQProxy
       start(user, password, vhost)
       spawn read_loop, name: "upstream read loop #{@host}:#{@port}"
       self
-    rescue ex : IO::Error | OpenSSL::SSL::Error
+    rescue ex : IO::Error | IO::EOFError | OpenSSL::SSL::Error
       raise Error.new "Cannot establish connection to upstream", ex
     end
 
