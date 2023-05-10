@@ -86,10 +86,6 @@ module AMQProxy
         close = AMQ::Protocol::Frame::Connection::Close.new(403_u16, "UPSTREAM_ERROR", 0_u16, 0_u16)
         close.to_io socket, IO::ByteFormat::NetworkEndian
         socket.flush
-      rescue ex : IO::EOFError
-        @log.error { "EOF Error for user '#{user}' to vhost '#{vhost}': #{ex.message}" }
-        close = AMQ::Protocol::Frame::Connection::Close.new(403_u16, "IO_EOFERROR", 0_u16, 0_u16)
-        close.to_io socket, IO::ByteFormat::NetworkEndian
       rescue ex : IO::Error
         @log.error { "IO Error for user '#{user}' to vhost '#{vhost}': #{ex.message}" }
         close = AMQ::Protocol::Frame::Connection::Close.new(403_u16, "IO_ERROR", 0_u16, 0_u16)
